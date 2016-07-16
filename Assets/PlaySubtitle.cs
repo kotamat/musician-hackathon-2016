@@ -7,6 +7,9 @@ public class PlaySubtitle : MonoBehaviour
 {
     public string lylicTextFileNameWithoutExtension;
 
+	[SerializeField]
+	private Transform cloneParent;
+
     [SerializeField]
     private GameObject subtitlePrefab;
     private GameObject currentSubtitle;
@@ -17,6 +20,7 @@ public class PlaySubtitle : MonoBehaviour
         Destroy(currentSubtitle);
         currentSubtitle = Instantiate(subtitlePrefab) as GameObject;
         currentSubtitle.GetComponentInChildren<TextMesh>().text = subtitle;
+		currentSubtitle.transform.SetParent (cloneParent);
     }
 
     public void Start()

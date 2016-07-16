@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="kanban" size="100.000000 52.368759" />
+    <ImageTarget name="steam" size="100.000000 99.000000" />
+    <ImageTarget name="gregory" size="100.000000 89.546600" />
+    <ImageTarget name="columbia" size="100.000000 75.000000" />
+    <ImageTarget name="coke" size="100.000000 150.753769" />
+    <ImageTarget name="stop" size="100.000000 130.151840" />
+    <ImageTarget name="logo" size="100.000000 102.721893" />
     <ImageTarget name="arrow" size="100.000000 103.017548" />
     <ImageTarget name="grid" size="100.000000 102.087540" />
     <ImageTarget name="corn" size="100.000000 100.470116" />

@@ -6,11 +6,14 @@ public class TestLocationService : MonoBehaviour
 	private string locationStr = "hogehoge";
 	private Vector2 currentLatLng;
 	private Vector3 compassVector;
-	private string compassStr;
+	private string compassStr = "";
 	private Vector3 velocity;
 	private GUIStyle style;
 
-	private Vector2[] CHECKPOINTS;
+	public Vector2[] CHECKPOINTS;
+
+	[SerializeField]
+	public float rangeCheckpoint = 0.000001f;
 	void Start()
 	{
 		// First, check if user has location service enabled
@@ -18,11 +21,6 @@ public class TestLocationService : MonoBehaviour
 			this.locationStr= "enable location service!!!";
 			return;
 		}
-
-		CHECKPOINTS[0] = new Vector2(35.665981f, 139.703532f);
-
-		style = new GUIStyle();
-		style.fontSize = 100;
 
 		// Start service before querying location
 		Input.location.Start();
@@ -35,18 +33,38 @@ public class TestLocationService : MonoBehaviour
 
 	void OnGUI ()
 	{
+		CHECKPOINTS = new Vector2[2];
+		CHECKPOINTS[0] = new Vector2(35.665981f, 139.703532f);
+		CHECKPOINTS[1] = new Vector2(35.665981f, 139.703532f);
+
+		this.style = new GUIStyle();
+		this.style.fontSize = 100;
+		GUI.Label(new Rect(0, 0, 600, 100), this.locationStr, this.style);
+
+		GUI.Label(new Rect(0, 100, 600, 100), this.compassStr, this.style);
 
 
-		Rect rect = new Rect(0, 0, 600, 100);
-		GUI.Label(rect, locationStr, style);
+		Vector2 diff = CHECKPOINTS[0] - this.currentLatLng;
+		GUI.Label(new Rect(0, 200, 600, 100), diff.x.ToString() + " " + diff.y.ToString(), this.style);
 
-		rect = new Rect(0, 100, 600, 100);
-		GUI.Label(rect, compassStr, style);
+		// check near checkpoint
+		if(diff.magnitude < rangeCheckpoint){
+			// TODO: alert checkpoint
+		}
 
-		rect = new Rect(0, 500, 600, 100);
-		Vector2 diff = CHECKPOINTS[0] - currentLatLng;
-		GUI.Label(rect, diff.x.ToString() + " " + diff.y.ToString(), style);
-
+		// calculate direction
+		float lat2 = CHECKPOINTS[0].x;
+		float lng2 = CHECKPOINTS[0].y;
+		float lat1 = this.currentLatLng.x;
+		float lng1 = this.currentLatLng.y;
+		var Y = Mathf.Cos(lng2 * Mathf.PI / 180) * Mathf.Sin(lat2 * Mathf.PI / 180 - lat1 * Mathf.PI / 180);
+		var X = Mathf.Cos(lng1 * Mathf.PI / 180) * Mathf.Sin(lng2 * Mathf.PI / 180) - Mathf.Sin(lng1 * Mathf.PI / 180) * Mathf.Cos(lng2 * Mathf.PI / 180) * Mathf.Cos(lat2 * Mathf.PI / 180 - lat1 * Mathf.PI / 180);
+		var dirE0 = 180 * Mathf.Atan2(Y, X) / Mathf.PI; // 東向きが０度の方向
+		if (dirE0 < 0) {
+			dirE0 = dirE0 + 360; //0～360 にする。
+		}
+		var dirN0 = (dirE0 + 90) % 360; //(dirE0+90)÷360の余りを出力 北向きが０度の方向
+		GUI.Label(new Rect(0, 300, 600, 100), dirN0.ToString(), this.style);
 	}
 
 	void getLocation()
@@ -67,8 +85,10 @@ public class TestLocationService : MonoBehaviour
 			// Access granted and location value could be retrieved
 			this.locationStr = "Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp;
 			//			print(this.Star);
-			currentLatLng = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+			this.currentLatLng = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
 		}
+
+
 
 		// Stop service if there is no need to query location updates continuously
 //		Input.location.Stop();

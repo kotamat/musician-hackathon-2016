@@ -18,6 +18,12 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 位置情報 GPSから -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+    <!-- 位置情報 ネットワークから -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- これは何だろう？？？ -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     
     <application
         android:icon="@drawable/app_icon"

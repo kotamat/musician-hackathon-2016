@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="arrow" size="100.000000 103.017548" />
+    <ImageTarget name="grid" size="100.000000 102.087540" />
+    <ImageTarget name="corn" size="100.000000 100.470116" />
+    <ImageTarget name="Star" size="100.000000 102.857140" />
+    <ImageTarget name="N" size="100.000000 103.291878" />
+    <ImageTarget name="A" size="100.000000 99.878052" />
+    <ImageTarget name="C" size="100.000000 100.000000" />
     <ImageTarget name="irohasu" size="100.000000 70.967743" />
   </Tracking>
 </QCARConfig>

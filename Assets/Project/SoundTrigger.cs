@@ -18,7 +18,7 @@ namespace Vuforia
 		[SerializeField] private AudioSource audio;
 		#region PRIVATE_MEMBER_VARIABLES
 
-		private TrackableBehaviour mTrackableBehaviour;
+		[SerializeField] private TrackableBehaviour mTrackableBehaviour;
 
 		#endregion // PRIVATE_MEMBER_VARIABLES
 
@@ -28,10 +28,7 @@ namespace Vuforia
 
 		void Start ()
 		{
-			mTrackableBehaviour = GetComponent<TrackableBehaviour> ();
-			if (mTrackableBehaviour) {
-				mTrackableBehaviour.RegisterTrackableEventHandler (this);
-			}
+			mTrackableBehaviour.RegisterTrackableEventHandler (this);
 		}
 
 		#endregion // UNTIY_MONOBEHAVIOUR_METHODS

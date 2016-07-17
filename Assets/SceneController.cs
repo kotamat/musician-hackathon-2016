@@ -3,6 +3,13 @@ using System.Collections;
 using Holoville.HOTween;
 public class SceneController : MonoBehaviour {
 
+	public enum Status
+	{
+		None=100,
+		Cat=0,
+		Meiji=1
+	}
+
 	static private SceneController _instance;
 	static public SceneController Instance {
 		get { return _instance;}
@@ -19,6 +26,8 @@ public class SceneController : MonoBehaviour {
 	public Transform cloneParent;
 	public GameObject arrowCube;
 	public Transform arCamera;
+
+	public Status status = Status.None;
 
 	// Use this for initialization
 	void Start () {
@@ -48,7 +57,7 @@ public class SceneController : MonoBehaviour {
 		if (index == -1) {
 			StopAllSound ();
 		}
-
+		status = (Status)(index);
 		arrowCube.SetActive (true);
 
 		audioSource.clip = audioClips [index];

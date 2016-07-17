@@ -96,6 +96,7 @@ namespace Vuforia
 				component.enabled = false;
 			}
 
+			SceneController.Instance.LoastMarker ();
 
 			Debug.Log ("Trackable " + mTrackableBehaviour.TrackableName + " lost");
 		}

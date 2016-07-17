@@ -12,21 +12,35 @@ public class SceneController : MonoBehaviour {
 	public AudioClip [] audioClips;
 	public AudioSource audioSource;
 	public ClapController clap;
-	public int clapWait = 3;
+	public int[] clapWait;
 	private Sequence clapWaiter;
 	public PlaySubtitle playPrefab;
 	private PlaySubtitle subtitle;
 	public Transform cloneParent;
+	public GameObject arrowCube;
+	public Transform arCamera;
+
 	// Use this for initialization
 	void Start () {
 		_instance = this;
 		clap.gameObject.SetActive (false);
-		PlaySound (1);
+		arrowCube.SetActive (false);
+		//PlaySound (1);
 
 	}
-
+	void Update ()
+	{
+		//LoastMarker ();
+	}
 	public void Checkpoint ()
 	{
+	}
+
+	public void LoastMarker ()
+	{
+		if (arCamera == null) return;
+		arCamera.localPosition = Vector3.zero;
+		arCamera.localRotation = new Quaternion ();
 	}
 
 	public void PlaySound (int index=0)
@@ -34,24 +48,28 @@ public class SceneController : MonoBehaviour {
 		if (index == -1) {
 			StopAllSound ();
 		}
+
+		arrowCube.SetActive (true);
+
 		audioSource.clip = audioClips [index];
 		audioSource.Play ();
 
-		if (index == 0 || index == 1) {
-			clapWaiter = new Sequence ();
-			clapWaiter.AppendInterval (clapWait);
-			clapWaiter.AppendCallback (clap.StartClap);
-			clapWaiter.Play ();
+		//if (index == 0 || index == 1) { }
+		clapWaiter = new Sequence ();
+		clapWaiter.AppendInterval (clapWait[index]);
+		clapWaiter.AppendCallback (clap.StartClap);
+		clapWaiter.Play ();
 
-			playPrefab.cloneParent = cloneParent;
-			playPrefab.lylicTextFileNameWithoutExtension = lylics [index];
-			subtitle = Instantiate (playPrefab) as PlaySubtitle;
-		}
+		playPrefab.cloneParent = cloneParent;
+		playPrefab.lylicTextFileNameWithoutExtension = lylics [index];
+		subtitle = Instantiate (playPrefab) as PlaySubtitle;
 	}
 	public void StopAllSound ()
 	{
 		audioSource.Stop ();
 		clapWaiter.Kill ();
+		arrowCube.SetActive (false);
+
 		if (subtitle != null) {
 			Destroy (subtitle.gameObject);
 		}

@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-
+using Holoville.HOTween;
 public class PlaySubtitle : MonoBehaviour
 {
     public string lylicTextFileNameWithoutExtension;
@@ -22,6 +22,11 @@ public class PlaySubtitle : MonoBehaviour
 			t.text = subtitle;
 		}
 		currentSubtitle.transform.SetParent (cloneParent);
+		var loc = currentSubtitle.transform.localPosition;
+		loc.z += 3;
+		//currentSubtitle.transform.localPosition = loc;
+
+		HOTween.To (currentSubtitle.transform, 8, "localPosition", loc).easeType = EaseType.EaseOutQuad;
     }
 
     public void Start()

@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Project/Main.unity
   - enabled: 0
     path: Assets/LylicDisplay.unity
+  - enabled: 0
+    path: Assets/GPS_text.unity

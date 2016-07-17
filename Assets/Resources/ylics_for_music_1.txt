@@ -1,4 +1,4 @@
-Free… 灼けた空,5
+Free… 灼けた空,0
 Noise…,10
 Main Street抜け,15
 街　染める,20

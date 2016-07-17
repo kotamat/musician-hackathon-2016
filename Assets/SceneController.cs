@@ -20,8 +20,13 @@ public class SceneController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_instance = this;
+		clap.gameObject.SetActive (false);
 		PlaySound (1);
 
+	}
+
+	public void Checkpoint ()
+	{
 	}
 
 	public void PlaySound (int index=0)
@@ -32,15 +37,16 @@ public class SceneController : MonoBehaviour {
 		audioSource.clip = audioClips [index];
 		audioSource.Play ();
 
-		clapWaiter = new Sequence ();
-		clapWaiter.AppendInterval (clapWait);
-		clapWaiter.AppendCallback (clap.StartClap);
-		clapWaiter.Play ();
+		if (index == 0 || index == 1) {
+			clapWaiter = new Sequence ();
+			clapWaiter.AppendInterval (clapWait);
+			clapWaiter.AppendCallback (clap.StartClap);
+			clapWaiter.Play ();
 
-		playPrefab.cloneParent = cloneParent;
-		playPrefab.lylicTextFileNameWithoutExtension = lylics[index];
-		subtitle = Instantiate (playPrefab) as PlaySubtitle;
-
+			playPrefab.cloneParent = cloneParent;
+			playPrefab.lylicTextFileNameWithoutExtension = lylics [index];
+			subtitle = Instantiate (playPrefab) as PlaySubtitle;
+		}
 	}
 	public void StopAllSound ()
 	{

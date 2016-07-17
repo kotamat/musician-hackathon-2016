@@ -20,6 +20,8 @@ public class SceneController : MonoBehaviour {
 	public AudioSource audioSource;
 	public ClapController clap;
 	public int[] clapWait;
+	public GameObject gps;
+	private Sequence gpsWaiter;
 	private Sequence clapWaiter;
 	public PlaySubtitle playPrefab;
 	private PlaySubtitle subtitle;
@@ -34,8 +36,9 @@ public class SceneController : MonoBehaviour {
 		_instance = this;
 		clap.gameObject.SetActive (false);
 		arrowCube.SetActive (false);
+		gps.SetActive (false);
 		//PlaySound (1);
-
+		Checkpoint ();
 	}
 	void Update ()
 	{
@@ -43,6 +46,27 @@ public class SceneController : MonoBehaviour {
 	}
 	public void Checkpoint ()
 	{
+		gps.SetActive (true);
+		if (gpsWaiter != null) {
+			gpsWaiter.Kill ();
+		}
+		gpsWaiter = new Sequence ();
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (false); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (true); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (false); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (true); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (false); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (true); });
+		gpsWaiter.AppendInterval (0.5f);
+		gpsWaiter.AppendCallback (() => { gps.SetActive (false); });
+		gpsWaiter.Play ();
+
 	}
 
 	public void LoastMarker ()

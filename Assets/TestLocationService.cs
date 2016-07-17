@@ -11,6 +11,7 @@ public class TestLocationService : MonoBehaviour
 	private GUIStyle style;
 
 	public Vector2[] CHECKPOINTS;
+	public int currentCheckpointIndex = 0;
 
 	[SerializeField]
 	public float rangeCheckpoint = 0.000001f;
@@ -23,10 +24,10 @@ public class TestLocationService : MonoBehaviour
 		}
 
 		// Start service before querying location
-		Input.location.Start();
+		Input.location.Start(1f,1f);
 		Input.compass.enabled = true;
 
-		InvokeRepeating("getLocation", 2, 3);
+		InvokeRepeating("getLocation", 2, 1);
 		InvokeRepeating("getCompass", 2, 0.3F);
 
 	}
@@ -34,22 +35,24 @@ public class TestLocationService : MonoBehaviour
 	void OnGUI ()
 	{
 		CHECKPOINTS = new Vector2[2];
-		CHECKPOINTS[0] = new Vector2(35.665981f, 139.703532f);
+		CHECKPOINTS[0] = new Vector2(35.664199f, 139.702397f);
 		CHECKPOINTS[1] = new Vector2(35.665981f, 139.703532f);
 
 		this.style = new GUIStyle();
 		this.style.fontSize = 100;
 		GUI.Label(new Rect(0, 0, 600, 100), this.locationStr, this.style);
 
-		GUI.Label(new Rect(0, 100, 600, 100), this.compassStr, this.style);
+		GUI.Label(new Rect(0, 100, 600, 100), "compass " + this.compassStr, this.style);
 
 
-		Vector2 diff = CHECKPOINTS[0] - this.currentLatLng;
-		GUI.Label(new Rect(0, 200, 600, 100), diff.x.ToString() + " " + diff.y.ToString(), this.style);
+		Vector2 diff = CHECKPOINTS[currentCheckpointIndex] - this.currentLatLng;
+		GUI.Label(new Rect(0, 200, 600, 100), "diff for checkpoint " + diff.x.ToString() + " " + diff.y.ToString(), this.style);
 
+		GUI.Label(new Rect(0, 400, 600, 100), "diff magnitude " + diff.magnitude.ToString(), this.style);
 		// check near checkpoint
 		if(diff.magnitude < rangeCheckpoint){
 			// TODO: alert checkpoint
+			GUI.Label(new Rect(0, 400, 600, 100), diff.magnitude.ToString(), this.style);
 		}
 
 		// calculate direction
@@ -64,7 +67,9 @@ public class TestLocationService : MonoBehaviour
 			dirE0 = dirE0 + 360; //0～360 にする。
 		}
 		var dirN0 = (dirE0 + 90) % 360; //(dirE0+90)÷360の余りを出力 北向きが０度の方向
-		GUI.Label(new Rect(0, 300, 600, 100), dirN0.ToString(), this.style);
+		var directionForCheckpoint = (dirN0 - Input.compass.trueHeading + 360) % 360; 
+		transform.rotation = Quaternion.Euler(0, 180 + directionForCheckpoint, 0);
+		GUI.Label(new Rect(0, 300, 600, 100), "direction for checkpoint " + directionForCheckpoint.ToString(), this.style);
 	}
 
 	void getLocation()
@@ -72,12 +77,14 @@ public class TestLocationService : MonoBehaviour
 
 		if(Input.location.status == LocationServiceStatus.Initializing)
 		{
+			this.locationStr = "Location: is initializing";
 			return;
 		}
 
 		// Connection has failed
 		if (Input.location.status == LocationServiceStatus.Failed)
 		{
+			this.locationStr = "Location: is Failed";
 			return;
 		}
 		else

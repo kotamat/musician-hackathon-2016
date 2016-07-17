@@ -14,9 +14,9 @@ public class ClapController : MonoBehaviour {
 	private bool isPink = true;
 	private int count;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		count = blick;
-		StartClap ();
+		//StartClap ();
 	}
 
 	public void StartClap ()

@@ -26,7 +26,9 @@ public class PlaySubtitle : MonoBehaviour
     public void Start()
     {
         var lylics = Resources.Load(lylicTextFileNameWithoutExtension) as TextAsset;
-        lylics.text.Split(new char[]{'\n'});
+		var text = lylics.text;
+		//text = text.Replace ('\r', "");
+  //      lylics.text.Split(new char[]{'\n'});
 
         foreach(var line in lylics.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
         {

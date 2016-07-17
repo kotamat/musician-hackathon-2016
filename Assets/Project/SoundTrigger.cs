@@ -14,8 +14,7 @@ namespace Vuforia
 	public class SoundTrigger : MonoBehaviour,
 												ITrackableEventHandler
 	{
-
-		[SerializeField] private AudioSource audio;
+		public int audioIndex = 0;
 		#region PRIVATE_MEMBER_VARIABLES
 
 		[SerializeField] private TrackableBehaviour mTrackableBehaviour;
@@ -76,7 +75,7 @@ namespace Vuforia
 				component.enabled = true;
 			}
 
-			audio.Play ();
+			SceneController.Instance.PlaySound (audioIndex);
 
 			Debug.Log ("Trackable " + mTrackableBehaviour.TrackableName + " found");
 		}
@@ -97,7 +96,6 @@ namespace Vuforia
 				component.enabled = false;
 			}
 
-			audio.Stop ();
 
 			Debug.Log ("Trackable " + mTrackableBehaviour.TrackableName + " lost");
 		}

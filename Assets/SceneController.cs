@@ -8,16 +8,19 @@ public class SceneController : MonoBehaviour {
 		get { return _instance;}
 	}
 
+	public string [] lylics;
 	public AudioClip [] audioClips;
 	public AudioSource audioSource;
 	public ClapController clap;
 	public int clapWait = 3;
 	private Sequence clapWaiter;
-
+	public PlaySubtitle playPrefab;
+	private PlaySubtitle subtitle;
+	public Transform cloneParent;
 	// Use this for initialization
 	void Start () {
 		_instance = this;
-		//PlaySound ();
+		PlaySound (1);
 
 	}
 
@@ -34,11 +37,18 @@ public class SceneController : MonoBehaviour {
 		clapWaiter.AppendCallback (clap.StartClap);
 		clapWaiter.Play ();
 
+		playPrefab.cloneParent = cloneParent;
+		playPrefab.lylicTextFileNameWithoutExtension = lylics[index];
+		subtitle = Instantiate (playPrefab) as PlaySubtitle;
+
 	}
 	public void StopAllSound ()
 	{
 		audioSource.Stop ();
 		clapWaiter.Kill ();
+		if (subtitle != null) {
+			Destroy (subtitle.gameObject);
+		}
 	}
 
 }

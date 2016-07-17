@@ -7,8 +7,7 @@ public class PlaySubtitle : MonoBehaviour
 {
     public string lylicTextFileNameWithoutExtension;
 
-	[SerializeField]
-	private Transform cloneParent;
+	public Transform cloneParent;
 
     [SerializeField]
     private GameObject subtitlePrefab;
@@ -19,7 +18,9 @@ public class PlaySubtitle : MonoBehaviour
         yield return new WaitForSeconds(delay);
         Destroy(currentSubtitle);
         currentSubtitle = Instantiate(subtitlePrefab) as GameObject;
-        currentSubtitle.GetComponentInChildren<TextMesh>().text = subtitle;
+		foreach (var t in currentSubtitle.GetComponentsInChildren<TextMesh> ()) {
+			t.text = subtitle;
+		}
 		currentSubtitle.transform.SetParent (cloneParent);
     }
 
